@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KORA — 来华外国旅客的 AI 城市向导</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --text: #e0e0e0;
+            --muted: #999;
+            --accent: #FF6B35;
+            --accent2: #FFD166;
+            --green: #06D6A0;
+            --blue: #118AB2;
+            --border: #2a2a2a;
+            --radius: 12px;
+            --max-w: 900px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 60px;
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f0f0f 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .hero .logo {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        .hero .tagline {
+            font-size: 22px;
+            color: #ccc;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .hero .subtag {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+        .hero .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #0088cc;
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(0,136,204,0.3);
+        }
+        .hero .telegram-btn:hover {
+            background: #0099dd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(0,136,204,0.45);
+        }
+        .hero .telegram-btn svg {
+            width: 22px; height: 22px;
+        }
+
+        /* Sections */
+        .section {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+        .section-sub {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        /* Problem cards */
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .pain-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+        .pain-card .emoji { font-size: 32px; margin-bottom: 8px; }
+        .pain-card h3 { font-size: 16px; margin-bottom: 6px; color: #fff; }
+        .pain-card p { font-size: 13px; color: var(--muted); }
+
+        /* KORA solves */
+        .solve-box {
+            background: linear-gradient(135deg, #1a3a2a, #1a2a3a);
+            border: 1px solid var(--green);
+            border-radius: var(--radius);
+            padding: 32px;
+            text-align: center;
+        }
+        .solve-box .big { font-size: 20px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+        .solve-box p { color: #bbb; font-size: 14px; }
+
+        /* Features */
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .feat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .feat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+        .feat-card .icon { font-size: 36px; margin-bottom: 12px; display: block; }
+        .feat-card h3 { font-size: 17px; margin-bottom: 8px; color: #fff; }
+        .feat-card p { font-size: 13px; color: var(--muted); }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            text-align: center;
+        }
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 16px;
+        }
+        .stat-card .num {
+            font-size: 40px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-card .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+        /* How to use */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .step-num {
+            flex-shrink: 0;
+            width: 44px; height: 44px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .step-content h3 { font-size: 17px; color: #fff; margin-bottom: 4px; }
+        .step-content p { font-size: 13px; color: var(--muted); }
+        .step-content code {
+            background: #222;
+            color: var(--accent2);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Example */
+        .chat-demo {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .chat-msg {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+        .chat-msg:last-child { border-bottom: none; }
+        .chat-msg .role {
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            min-width: 44px;
+            text-align: center;
+        }
+        .role.user { background: var(--blue); color: #fff; }
+        .role.kora { background: var(--green); color: #000; }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 60px 24px;
+        }
+        .cta p { color: var(--muted); margin-bottom: 20px; font-size: 16px; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero .logo { font-size: 48px; }
+            .hero .tagline { font-size: 18px; }
+            .section-title { font-size: 22px; }
+            .stat-card .num { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+    <div class="logo">KORA</div>
+    <div class="tagline">Your Friend in China 🇨🇳</div>
+    <div class="subtag">面向来华外国旅客的 AI 城市生活向导 — 落地、支付、吃喝玩乐，还能连接真正懂行的本地人</div>
+    <a class="telegram-btn" href="https://t.me/Kora_china_bot" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.96 6.502-1.358 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.901-.903-1.056-.692-1.653-1.123-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.329-.913.49-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.246-1.35-.375-1.297-.79.027-.216.325-.437.894-.662 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.1-.002.321.023.464.14.12.099.153.233.168.328.016.095.036.31.02.478z"/></svg>
+        在 Telegram 上打开 KORA
+    </a>
+</section>
+
+<!-- ============ 痛点 ============ -->
+<section class="section">
+    <h2 class="section-title">外国人来中国，有多难？</h2>
+    <p class="section-sub">既有兴奋又有焦虑 — 中国那么大，但"看不懂、不会用、问不了"是真实痛点。</p>
+    <div class="pain-grid">
+        <div class="pain-card">
+            <div class="emoji">📱</div>
+            <h3>支付困境</h3>
+            <p>日常全靠微信/支付宝扫码，外国信用卡和现金寸步难行。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">🗺️</div>
+            <h3>出行迷路</h3>
+            <p>Google Maps 在中国不好用，本地地图 App 全是中文。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">📶</div>
+            <h3>断网焦虑</h3>
+            <p>没有中国手机号就难办 SIM 卡，WiFi 又不稳定。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">🍜</div>
+            <h3>吃喝玩乐</h3>
+            <p>大众点评、美团全是中文，找不到好吃的、好玩的。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">🚕</div>
+            <h3>打车买票</h3>
+            <p>没有本地 App 打不到车，景点门票不会线上预约。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">💬</div>
+            <h3>语言障碍</h3>
+            <p>大多数中国人不会英语，沟通全靠比划和翻译软件。</p>
+        </div>
+    </div>
+
+    <div class="solve-box">
+        <div class="big">🟢 KORA 把这些痛点，全部打包成一个对话窗口。</div>
+        <p>不用下载一堆 App、不用到处搜攻略、不用找人翻译 — 打开 Telegram，跟 KORA 聊天就行。</p>
+    </div>
+</section>
+
+<!-- ============ KORA 是啥 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">KORA 是什么？</h2>
+    <p class="section-sub">KORA 是嵌入在 Telegram 里的 AI 城市生活向导，专门服务来中国的外国旅客。它的独特之处在于：<strong>不仅用 AI 回答你的问题，还能帮你连接到真正懂行的本地人</strong> — 厨师、设计师、城中潮人。</p>
+
+    <div class="feat-grid">
+        <div class="feat-card">
+            <span class="icon">🤖</span>
+            <h3>AI 对话式交互</h3>
+            <p>自然语言对话，你想问什么直接说。不用菜单、不用搜索，就像跟本地朋友发消息一样。AI 驱动，7×24 在线秒回。</p>
+        </div>
+        <div class="feat-card">
+            <span class="icon">👨‍🍳</span>
+            <h3>连接本地厨师</h3>
+            <p>想吃地道中餐但看不懂菜单？想找隐藏在小巷里的老字号？KORA 帮你连接本地厨师和美食达人，告诉你该点什么、去哪吃。</p>
+        </div>
+        <div class="feat-card">
+            <span class="icon">👗</span>
+            <h3>连接本地设计师</h3>
+            <p>想逛独立设计店铺？想定制一件旗袍？想知道哪里买最有设计感的伴手礼？KORA 帮你对接本地设计师和买手。</p>
+        </div>
+        <div class="feat-card">
+            <span class="icon">🕶️</span>
+            <h3>连接城中潮人</h3>
+            <p>当地最酷的酒吧、地下 livehouse、限时快闪店、年轻人聚集的街区 — KORA 认识"城里最会玩的人"，让他带你去。</p>
+        </div>
+        <div class="feat-card">
+            <span class="icon">🏙️</span>
+            <h3>15+ 城市覆盖</h3>
+            <p>北京、上海、广州、深圳、成都、杭州、西安……主流旅游城市全覆盖，走到哪问到哪。</p>
+        </div>
+        <div class="feat-card">
+            <span class="icon">💰</span>
+            <h3>支付 & 生活实用指南</h3>
+            <p>支付宝/微信怎么绑卡？SIM 卡去哪办？怎么打车？怎么订票？这些"生存问题"，KORA 一步帮你搞定。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 数据 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">试点数据</h2>
+    <p class="section-sub">KORA 试点期已积累的成绩单：</p>
+    <div class="stats">
+        <div class="stat-card">
+            <div class="num">35万+</div>
+            <div class="label">真实对话轮次</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">~2,000</div>
+            <div class="label">服务外国旅客</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">15+</div>
+            <div class="label">覆盖城市</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">24/7</div>
+            <div class="label">全天候在线</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 连接真人专家 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">不只 AI，更有真人</h2>
+    <p class="section-sub">这是 KORA 跟其他 AI 向导最大的不同 — 当 AI 回答不够时，KORA 把你连接到"真正懂行的人"。</p>
+
+    <div class="pain-grid">
+        <div class="pain-card" style="border-left: 4px solid var(--accent);">
+            <div class="emoji">👨‍🍳</div>
+            <h3>Chefs · 厨师 & 美食家</h3>
+            <p>想吃最正宗的火锅蘸料怎么调？哪家小面馆是本地人的心头好？KORA 认识懂吃的人，帮你避开"游客陷阱"。</p>
+        </div>
+        <div class="pain-card" style="border-left: 4px solid var(--blue);">
+            <div class="emoji">👗</div>
+            <h3>Designers · 设计师 & 买手</h3>
+            <p>想逛非连锁的独立买手店？想了解中国新锐设计师品牌？KORA 帮你对接时尚圈内人，带你发现不一样的审美。</p>
+        </div>
+        <div class="pain-card" style="border-left: 4px solid var(--accent2);">
+            <div class="emoji">🕶️</div>
+            <h3>Cool Kids · 城中潮人</h3>
+            <p>今晚哪里有最好玩的 party？哪个街区是年轻人新据点？KORA 认识"城里最会玩的那群人"，让你像本地潮人一样玩。</p>
+        </div>
+    </div>
+
+    <div class="solve-box" style="text-align: left;">
+        <div class="big" style="color: var(--accent2);">💡 KORA 的核心理念</div>
+        <p>AI 可以回答 80% 的问题：支付、地图、翻译、办卡……但剩下的 20% — "今晚哪里最好玩？"、"这家店值得排一小时吗？"、"本地人周末去哪？" — 这些只有真正生活在这里的人才答得上。KORA = AI 效率 + 真人洞见。</p>
+    </div>
+</section>
+
+<!-- ============ 怎么用 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">怎么使用 KORA？</h2>
+    <p class="section-sub">三步上手，零门槛。</p>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h3>安装 Telegram</h3>
+                <p>从 App Store 或 Google Play 下载 Telegram（海外旅客本来就常用）。</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h3>搜索 <code>@Kora_china_bot</code></h3>
+                <p>在 Telegram 搜索栏输入 <code>@Kora_china_bot</code>，找到 KORA 机器人。</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h3>开始聊天！</h3>
+                <p>发送你的问题 — "怎么用支付宝？"、"这附近有什么好吃的？"、"帮我翻译一句话" — 随便问。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 对话示例 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">对话长什么样？</h2>
+    <p class="section-sub">来看几个真实的 KORA 对话例子👇</p>
+    <div class="chat-demo">
+        <div class="chat-msg">
+            <span class="role user">🧑 旅客</span>
+            <span>我刚到上海浦东机场，怎么买 SIM 卡？不会中文。</span>
+        </div>
+        <div class="chat-msg">
+            <span class="role kora">🤖 KORA</span>
+            <span>Welcome to Shanghai! 🇨🇳 浦东机场到达大厅有中国移动和中国联通的柜台（在行李提取后右手边）。推荐中国联通"外籍旅客套餐"，7天 ¥99 含 20GB 流量。带上护照即可办理，工作人员可以说简单英语。你也可以用这张卡片递给工作人员 👇 [生成中文卡片]</span>
+        </div>
+        <div class="chat-msg">
+            <span class="role user">🧑 旅客</span>
+            <span>Great! 我还需要打车去酒店，但没有滴滴。</span>
+        </div>
+        <div class="chat-msg">
+            <span class="role kora">🤖 KORA</span>
+            <span>没问题！你可以直接在微信里用滴滴打车：打开微信 → 我 → 服务 → 滴滴出行。或者如果你想用支付宝：首页就有"打车"入口。两者都支持英文界面。你的酒店地址是什么？我可以帮你生成中文地址卡给司机看。</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 为什么值得关注 ============ -->
+<section class="section" style="padding-top: 20px;">
+    <h2 class="section-title">为什么 KORA 值得关注？</h2>
+    <p class="section-sub">在中国扩大免签政策、来华旅游爆发的背景下，KORA 切中了一个巨大的真实需求。</p>
+
+    <div class="pain-grid">
+        <div class="pain-card">
+            <div class="emoji">🌏</div>
+            <h3>政策红利</h3>
+            <p>中国已对 50+ 国家推出免签政策，2025 年入境旅客量激增。但配套的"在地服务"严重不足。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">🔌</div>
+            <h3>技术壁垒</h3>
+            <p>外国旅客的手机生态（Google、WhatsApp、信用卡）跟中国完全不兼容，KORA 是最低摩擦的桥梁。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">⚡</div>
+            <h3>AI 时代解法</h3>
+            <p>传统方式需要下载一堆 App + 学中文 + 看攻略。AI 对话式向导把这一切压缩成一句话："帮我"。</p>
+        </div>
+        <div class="pain-card">
+            <div class="emoji">📊</div>
+            <h3>数据验证</h3>
+            <p>试点期 35 万+ 对话轮次、近 2000 名用户，说明这不是一个 demo，而是真有人用的产品。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta">
+    <h2 style="font-size: 26px; margin-bottom: 12px;">感兴趣？分享给身边的外国朋友 🎉</h2>
+    <p>如果你有外国朋友计划来中国旅行，把这个链接发给他，帮他们少踩 100 个坑。</p>
+    <a class="telegram-btn" href="https://t.me/Kora_china_bot" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px;height:22px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.96 6.502-1.358 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.901-.903-1.056-.692-1.653-1.123-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.329-.913.49-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.246-1.35-.375-1.297-.79.027-.216.325-.437.894-.662 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.1-.002.321.023.464.14.12.099.153.233.168.328.016.095.036.31.02.478z"/></svg>
+        @Kora_china_bot on Telegram
+    </a>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+    <p>KORA — AI 驱动的来华旅客城市向导 · <a href="https://t.me/Kora_china_bot" target="_blank" rel="noopener">@Kora_china_bot</a></p>
+    <p style="margin-top:6px;">本页面由 <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a> 生成 · 部署于 GitHub Pages</p>
+</footer>
+
+</body>
+</html>
